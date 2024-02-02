@@ -1,0 +1,32 @@
+visited = []
+def tsp(N,s):
+    cost = 10000
+    visited[s-1] = 1
+    if(len(N) == 2):
+        a = N.pop()
+        b = N.pop()
+        return dist[a-1][b-1]
+    else:
+        for j in N:
+            for i in N:
+                if (j != i and j != s):
+                    cost = min(tsp(N - {i},j) + dist[j-1][i-1],cost)
+                    visited[j-1] = 1
+    return cost
+        
+
+n = int(input("Enter the number of cities: "))
+s = int(input("Enter the starting point: "))
+N = set()
+dist = [[0,12,10,19,8],[12,0,3,7,6],[10,3,0,2,20],[19,7,2,0,4],[8,6,20,4,0]]
+for i in range(1,n+1):
+    N.add(i)
+    visited.append(0)
+    # dist.append([])
+    
+# for i in range(1,n+1):
+#     for j in  range(1,n+1):
+#         el = int(input(f"Enter the weight of the path {i}->{j}"))
+#         dist[i-1].append(el)
+        
+print(tsp(N,1))

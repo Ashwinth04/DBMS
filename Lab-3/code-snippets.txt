@@ -1,0 +1,188 @@
+#Code snippets:-
+
+###########SELECT* from library#########################
+void view_catalog()
+{
+    FILE* file = fopen("library.dat","rb");
+    int i = 1;
+    if(file != NULL)
+    {
+        printf("Acquisition date   Book id       Author name    Publication date       Book title    Genre    ISBN number    Quantity\n");
+        struct Book* book = (struct Book*)malloc(sizeof(struct Book));
+        while(fread(book, sizeof(struct Book),1,file) == 1)
+        {
+            //printf("\nBook %d\n",i);
+            printf("%10s",book->acq_date);
+            printf("%15s",book->id);
+            printf("%20s",book->author);
+            printf("%15s",book->pub_date);
+            printf("%20s",book->title);
+            printf("%10s",book->genre);
+            printf("%15s",book->ISBN);
+            printf("%10d",book->quantity);
+            printf("\n\n");
+            i++;
+        }
+
+        FILE* transac = fopen("transactions.dat","ab+");
+        if(transac != NULL)
+        {
+            fprintf(transac,"Catalog was viewed\n");
+        }else
+        {
+            printf("Error opening transactions file");
+        }
+         fclose(transac);
+    }else{
+        printf("File not found");
+    }
+    fclose(file);
+}
+
+
+############SELECT {set of attributes} from library################
+void view_attributes(char* argv[],int num)
+{
+    FILE* file = fopen("library.dat","rb");
+    int i = 1;
+    if(file != NULL)
+    {
+        for(int i=2;i<num+2;i++)
+        {
+            printf("%s     ",argv[i]);
+        }
+        printf("\n");
+        struct Book* book = (struct Book*)malloc(sizeof(struct Book));
+        while(fread(book, sizeof(struct Book),1,file) == 1)
+        {
+            for(int i=2;i<num+2;i++)
+            {
+                if(strcmp("acquisition date",argv[i]) == 0)
+                {
+                    printf("%10s",book->acq_date);
+                }
+                if(strcmp("book id",argv[i]) == 0)
+                {
+                    printf("%15s",book->id);
+                }
+                if(strcmp("author name",argv[i]) == 0)
+                {
+                    printf("%20s",book->author);
+                }
+                if(strcmp("publication date",argv[i]) == 0)
+                {
+                    printf("%15s",book->pub_date);
+                }
+                if(strcmp("book title",argv[i]) == 0)
+                {
+                    printf("%20s",book->title);
+                }
+                if(strcmp("genre",argv[i]) == 0)
+                {
+                    printf("%10s",book->genre);
+                }
+                if(strcmp("isbn number",argv[i]) == 0)
+                {
+                    printf("%15s",book->ISBN);
+                }
+                if(strcmp("quantity",argv[i]) == 0)
+                {
+                    printf("%10d",book->quantity);
+                }
+            }
+            printf("\n\n");
+            i++;
+        }
+
+        FILE* transac = fopen("transactions.dat","ab+");
+        if(transac != NULL)
+        {
+            fprintf(transac,"Catalog was viewed\n");
+        }else
+        {
+            printf("Error opening transactions file");
+        }
+         fclose(transac);
+    }else{
+        printf("File not found");
+    }
+    fclose(file);
+}
+
+##############SELECT* from library where condition########################
+
+void conditional_view(char* argv[])
+{
+    FILE* file = fopen("library.dat","rb");
+    int i = 1;
+    if(file != NULL)
+    {
+        printf("Acquisition date   Book id       Author name    Publication date       Book title    Genre    ISBN number    Quantity\n");
+        struct Book* book = (struct Book*)malloc(sizeof(struct Book));
+        while(fread(book, sizeof(struct Book),1,file) == 1)
+        {
+            bool isSelected = false;
+            if(strcmp(argv[7],book->acq_date) == 0)
+            {
+                isSelected = true;
+            }
+            else if(strcmp(argv[7],book->id) == 0)
+            {
+                isSelected = true;
+            }
+            else if(strcmp(argv[7],book->author) == 0)
+            {
+                isSelected = true;
+            }
+            else if(strcmp(argv[7],book->pub_date) == 0)
+            {
+                isSelected = true;
+            }
+            else if(strcmp(argv[7],book->title) == 0)
+            {
+                isSelected = true;
+            }
+            else if(strcmp(argv[7],book->genre) == 0)
+            {
+                isSelected = true;
+            }
+            else if(strcmp(argv[7],book->ISBN) == 0)
+            {
+                isSelected = true;
+            }
+            else if(atoi(argv[7]) == book->quantity)
+            {
+                isSelected = true;
+            }
+            if(isSelected)
+            {
+                printf("%10s",book->acq_date);
+                printf("%15s",book->id);
+                printf("%20s",book->author);
+                printf("%15s",book->pub_date);
+                printf("%20s",book->title);
+                printf("%10s",book->genre);
+                printf("%15s",book->ISBN);
+                printf("%10d",book->quantity);
+                printf("\n\n");
+            }
+            i++;
+        }
+
+        FILE* transac = fopen("transactions.dat","ab+");
+        if(transac != NULL)
+        {
+            fprintf(transac,"Catalog was viewed\n");
+        }
+        else
+        {
+            printf("Error opening transactions file");
+        }
+         fclose(transac);
+    }
+    else
+    {
+        printf("File not found");
+    }
+    fclose(file);
+}
